@@ -24,9 +24,12 @@ function App() {
 }
 
 
-const hoc = (R, N)=> {
-  const networkHooks = // can't! we need to be inside a component instance
-};
+const hoc = (R, N)=> ({
+  connections=N.map( // cant be array because functions need names
+})=> (
+  
+  <R/>
+);
 
 
 export default App;
