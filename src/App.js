@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -24,8 +24,15 @@ function App() {
 }
 
 
-const hoc = (R, N)=> ({
-  connections=N.map( // cant be array because functions need names
+const hoc = (R, initState, N)=> ({
+  s: ([state, setState] = useState({})),
+  stateHandlers = Object.keys(initState).sort().reduce((sh, s)=> ({
+    ...sh,
+    [s, 'set'+s] = useState(initState[s]),
+  }), {}),
+  connections = N.reduce(( connections, c, { name=Object.keys(c)[0] } )=> ({
+    ...connections, [name]: (0),
+    }), {})
 })=> (
   
   <R/>
