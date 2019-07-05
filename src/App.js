@@ -23,4 +23,10 @@ function App() {
   );
 }
 
+
+const hoc = P=> {
+  
+};
+
+
 export default App;
