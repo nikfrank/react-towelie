@@ -24,8 +24,8 @@ function App() {
 }
 
 
-const hoc = P=> {
-  
+const hoc = (R, N)=> {
+  const networkHooks = // can't! we need to be inside a component instance
 };
 
 
