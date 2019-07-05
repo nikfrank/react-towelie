@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const App = ({
+import hoc from './hoc';
 
+export default hoc(({
+  count, setCount, saveCount, networkCount,
 })=> (
   <div className="App">
     <header className="App-header">
@@ -11,38 +13,30 @@ const App = ({
       <p>
         Edit <code>src/App.js</code> and save to reload.
       </p>
+      <button onClick={()=> setCount(count+1)}>Count</button>
+      <button onClick={()=> saveCount(count)}>Save</button>
       <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
       >
-        Learn React
+        Learn React x{count} X{networkCount}
       </a>
     </header>
   </div>
-);
-
-
-const hoc = (R, initState={}, N={})=> ({
-  networkStateHandler: ([networkState, setNetworkState] = useState({})),
-  
-  stateHandlers = Object.keys(initState).sort().reduce((sh, s, {
-    stateHandler = useState(initState[s]),
-  })=> ({
-    ...sh, [s]:stateHandler[0], ['set'+s[0].toUpperCase()+s.slice(1)]: stateHandler[1],
-  }), {}),
-  
-  connections = Object.keys(N).sort().reduce(( connections, c, {
-    name=Object.keys(c)[0]
-  } )=> ({
-    ...connections, [name]: (...a)=> c[name](...a)
-      .then(nextState => setNetworkState({ ...networkState, ...nextState }) )
-      .catch(error => setNetworkState({ ...networkState, error }) ),
-    }), {})
-})=> (
-  <R {...networkState} {...stateHandlers} {...connections} />
-);
-
-
-export default hoc(App);
+), {
+  count: 0
+}, {
+  saveCount: (countToSave)=> (new Promise(res =>
+    setTimeout(()=> res({ networkCount: countToSave }), 2000)
+  )),
+}, [
+  ({
+    count, networkCount,
+  })=> (
+    (count > 10) && (networkCount > 10) ? ({
+      count: 0, networkCount: 0,
+    }) : null
+  )
+]);
