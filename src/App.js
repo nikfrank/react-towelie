@@ -41,8 +41,7 @@ const hoc = (R, initState, N)=> ({
       .catch(error => setNetworkState({ ...networkState, error }) ),
     }), {})
 })=> (
-  
-  <R/>
+  <R {...networkState} {...stateHandlers} {...connections} />
 );
 
 
