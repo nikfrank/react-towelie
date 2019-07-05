@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
+const App = ({
+
+})=> (
+  <div className="App">
+    <header className="App-header">
+      <img src={logo} className="App-logo" alt="logo" />
+      <p>
+        Edit <code>src/App.js</code> and save to reload.
+      </p>
+      <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+      >
+        Learn React
+      </a>
+    </header>
+  </div>
+);
 
 
-const hoc = (R, initState, N)=> ({
+const hoc = (R, initState={}, N={})=> ({
   networkStateHandler: ([networkState, setNetworkState] = useState({})),
   
   stateHandlers = Object.keys(initState).sort().reduce((sh, s, {
@@ -45,4 +45,4 @@ const hoc = (R, initState, N)=> ({
 );
 
 
-export default App;
+export default hoc(App);
