@@ -25,13 +25,20 @@ function App() {
 
 
 const hoc = (R, initState, N)=> ({
-  s: ([state, setState] = useState({})),
-  stateHandlers = Object.keys(initState).sort().reduce((sh, s)=> ({
-    ...sh,
-    [s, 'set'+s] = useState(initState[s]),
+  networkStateHandler: ([networkState, setNetworkState] = useState({})),
+  
+  stateHandlers = Object.keys(initState).sort().reduce((sh, s, {
+    stateHandler = useState(initState[s]),
+  })=> ({
+    ...sh, [s]:stateHandler[0], ['set'+s[0].toUpperCase()+s.slice(1)]: stateHandler[1],
   }), {}),
-  connections = N.reduce(( connections, c, { name=Object.keys(c)[0] } )=> ({
-    ...connections, [name]: (0),
+  
+  connections = Object.keys(N).sort().reduce(( connections, c, {
+    name=Object.keys(c)[0]
+  } )=> ({
+    ...connections, [name]: (...a)=> c[name](...a)
+      .then(nextState => setNetworkState({ ...networkState, ...nextState }) )
+      .catch(error => setNetworkState({ ...networkState, error }) ),
     }), {})
 })=> (
   
